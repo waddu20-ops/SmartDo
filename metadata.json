@@ -1,0 +1,7 @@
+{
+  "name": "SmartDo",
+  "description": "An AI-powered productivity companion that turns daunting tasks into gentle steps using voice interaction and encouraging AI support.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
