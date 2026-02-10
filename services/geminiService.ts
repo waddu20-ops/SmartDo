@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Task } from "../types";
 
@@ -25,7 +24,7 @@ export const breakdownTask = async (taskTitle: string): Promise<string[]> => {
         },
       },
     });
-    const result = JSON.parse(response.text);
+    const result = JSON.parse(response.text || "{\"steps\":[]}");
     return result.steps;
   } catch (error) {
     console.error("Error breaking down task:", error);
@@ -50,7 +49,7 @@ export const categorizeTask = async (title: string): Promise<{ zone: Task['zone'
         },
       },
     });
-    return JSON.parse(response.text);
+    return JSON.parse(response.text || "{\"zone\":\"other\",\"energy\":\"low\"}");
   } catch {
     return { zone: 'other', energy: 'low' };
   }
@@ -70,7 +69,7 @@ export const getDailyReflection = async (tasks: Task[]): Promise<string> => {
       model: "gemini-3-flash-preview",
       contents: prompt,
     });
-    return response.text;
+    return response.text || "Your garden is beautiful just as it is. Every seed has its own time to bloom.";
   } catch {
     return "Your garden is beautiful just as it is. Every seed has its own time to bloom.";
   }
@@ -82,7 +81,7 @@ export const getTaskWateringTip = async (taskTitle: string): Promise<string> => 
       model: "gemini-3-flash-preview",
       contents: `The user is stuck on "${taskTitle}". Give them one tiny "watering tip"—a specific, very easy way to start right now that takes less than 2 minutes. Be warm.`,
     });
-    return response.text;
+    return response.text || "Just take one deep breath and set a timer for 2 minutes.";
   } catch {
     return "Just take one deep breath and set a timer for 2 minutes.";
   }

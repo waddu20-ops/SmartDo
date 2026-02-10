@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { GoogleGenAI, Modality, LiveServerMessage, Type, FunctionDeclaration } from '@google/genai';
 import { encode, decode, decodeAudioData } from '../utils/audioUtils';
@@ -115,7 +114,7 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onTaskDetected }) => {
               nextStartTimeRef.current = 0;
             }
 
-            if (message.toolCall) {
+            if (message.toolCall?.functionCalls) {
               for (const fc of message.toolCall.functionCalls) {
                 if (fc.name === 'add_calendar_task') {
                   const { title, day, time, importance } = fc.args as any;
@@ -166,7 +165,7 @@ const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onTaskDetected }) => {
               }
             }
 
-            const audioData = message.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
+            const audioData = message.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
             if (audioData && audioContextRef.current) {
               setIsSpeaking(true);
               const buffer = await decodeAudioData(decode(audioData), audioContextRef.current, 24000, 1);
